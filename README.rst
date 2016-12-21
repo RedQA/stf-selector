@@ -21,7 +21,7 @@ stf_selector
 stf devices selector
 
 
-* Free software: MIT license
+* Free software: Apache Software License 2.0
 * Documentation: https://stf-selector.readthedocs.io.
 
 
