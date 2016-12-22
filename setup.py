@@ -11,6 +11,9 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     'Click>=6.0',
+    'pytest>=3.0.3',
+    'tinydb>=3.2.1',
+    'requests>=2.12.4',
     # TODO: put package requirements here
 ]
 

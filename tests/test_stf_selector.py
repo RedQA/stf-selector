@@ -19,7 +19,8 @@ from stf_selector import cli
 
 @pytest.fixture
 def response():
-    """Sample pytest fixture.
+    """
+    Sample pytest fixture.
     See more at: http://doc.pytest.org/en/latest/fixture.html
     """
     # import requests
@@ -27,10 +28,13 @@ def response():
 
 
 def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument.
+    """
+    Sample pytest test function with the pytest fixture as an argument.
     """
     # from bs4 import BeautifulSoup
     # assert 'GitHub' in BeautifulSoup(response.content).title.string
+
+
 def test_command_line_interface():
     runner = CliRunner()
     result = runner.invoke(cli.main)
