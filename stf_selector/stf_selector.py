@@ -15,7 +15,9 @@ SDK版本	sdk	22
 
 from tinydb import TinyDB, Query, where
 from tinydb.storages import MemoryStorage
+from uities.red_stf_devices import HTTP_STF
 
+# To modify the default storage for all TinyDB instances
 TinyDB.DEFAULT_STORAGE = MemoryStorage
 
 
@@ -23,17 +25,29 @@ class stf_selector(object):
     """
     According users requirements to select devices
     """
-    db = TinyDB(storage=MemoryStorage)
 
     def __init__(self):
         """
         Construct method
         """
-        pass
+        self.db = TinyDB(storage=MemoryStorage)
+        self.table = self.db.table(name="stf_device_selector")
 
     def create_tables(self):
         """
         Use the data which got from stf platform to crate query table
         :return:
         """
+        dict = HTTP_STF().get()
+        self.table.insert(dict)
+
+
+    def devices_selector(self, *args, **kwargs):
         pass
+        # query = Query()
+        # return self.db.contains(query[u'success']==True)
+
+if __name__ == '__main__':
+    stf_selector = stf_selector()
+    stf_selector.create_tables()
+    print stf_selector.devices_selector()
