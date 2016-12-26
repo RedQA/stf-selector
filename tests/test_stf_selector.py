@@ -10,11 +10,11 @@ Tests for `stf_selector` module.
 
 import pytest
 
-from contextlib import contextmanager
 from click.testing import CliRunner
-
-from stf_selector import stf_selector
+from stf_selector.uities.log import LOGGER
 from stf_selector import cli
+
+LOGGER.info("*********Begin**********")
 
 
 @pytest.fixture
