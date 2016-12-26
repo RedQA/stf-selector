@@ -2,14 +2,14 @@
 """
 stf devices selector
 ===============================================
-维度	    字段	         e.g.	备注
-设备商	manufacturer OPPO
-版本	    version      5.1.1
-屏幕尺寸	display	     {height:1920，width:1080}
-SDK版本	sdk	22
-设备序列  serial	     778d4f10
-系统平台	platform	 android
-设备型号	mode         Plusm A
+field	     e.g.
+manufacturer OPPO
+version      5.1.1
+display	     {height:1920，width:1080}
+sdk	         22
+serial	     778d4f10
+platform	 android
+mode         Plusm A
 ===============================================
 """
 
@@ -60,16 +60,23 @@ class stf_selector(object):
         or (('Query('sdk') == '22') | ('Query('manufacturer')=='OPPO')
         :return: res that contains required devices "adb remote connect address",  type(res) is list
         """
-        temp = (where("display").exists()) & (where("present").exists()) & (where("using").exists())
+        # conditions of defaults
+        temp = (where("display").exists())
+        temp &= (where("present").exists())
+        temp &= (where("using").exists())
         temp &= (where("present") == True)
         if use is True:
             temp &= (where("using") == True)
         else:
             temp &= (where("using") == False)
+        # conditions of user
         for k, v in kwargs.items():
-            temp &= (where(k) == v)
+            if type(v) is dict:
+                for x, y in v.items():
+                    temp &= (Query([k,x]) == y)
+            else:
+                temp &= (where(k) == v)
         res = self.db.search(temp)
-        print res
         un_use_devices = []
         if res is not None and len(res) >= number:
             temp = {}
@@ -79,7 +86,6 @@ class stf_selector(object):
                 else:
                     temp['url'] = device['display']['url'][5:]
                 temp['version'] = device['version']
-                print temp
                 un_use_devices.insert(0, temp)
         return un_use_devices
 
@@ -89,4 +95,4 @@ if __name__ == '__main__':
     headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
     stf_selector.insert_data(headers)
     # print stf_selector.db.all()
-    print stf_selector.devices_selector(manufacturer='OPPO', sdk='19')
+    print stf_selector.devices_selector(manufacturer='OPPO', sdk='19', display={"height": 1920, "width": 1080})
