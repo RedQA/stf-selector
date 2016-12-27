@@ -73,7 +73,7 @@ class stf_selector(object):
         for k, v in kwargs.items():
             if type(v) is dict:
                 for x, y in v.items():
-                    temp &= (Query([k,x]) == y)
+                    temp &= (Query([k, x]) == y)
             else:
                 temp &= (where(k) == v)
         res = self.db.search(temp)
@@ -86,8 +86,32 @@ class stf_selector(object):
                 else:
                     temp['url'] = device['display']['url'][5:]
                 temp['version'] = device['version']
-                un_use_devices.insert(0, temp)
+                un_use_devices.append(temp)
+        else:
+            logger.info("There is not enough devices.")
         return un_use_devices
+
+    def find(self, cond=None):
+        """
+        According condition to filter devices and return
+        :param cond: conditon to filter devices
+        :type cond: Query()
+        :return: stf_selector object and its db contains devices
+        """
+        # conditions of defaults
+        temp = (where("display").exists())
+        temp &= (where("present").exists())
+        temp &= (where("using").exists())
+        temp &= (where("present") == True)
+        if cond is not None:
+            temp &= cond
+        res = self.db.search(temp)
+        self.db.purge()
+        self.db.insert_multiple(res)
+        return self
+
+    def get_devices(self):
+        return self.db.all()
 
 
 if __name__ == '__main__':
@@ -95,4 +119,7 @@ if __name__ == '__main__':
     headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
     stf_selector.insert_data(headers)
     # print stf_selector.db.all()
-    print stf_selector.devices_selector(manufacturer='OPPO', sdk='19', display={"height": 1920, "width": 1080})
+    stf_selector = stf_selector.find(((where("manufacturer") == 'OPPO') | (where("manufacturer") == 'SAMSUNG'))
+                                     & (where("sdk") == '19') & (where("display")['height'] == 1920))\
+        .find(Query(["display", "width"]) == 1080)
+    print stf_selector.get_devices()
