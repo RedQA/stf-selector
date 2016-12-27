@@ -11,7 +11,7 @@ from constant import BASE_URL
 logger = logging.getLogger(__name__)
 
 
-class http_stf(object):
+class http_stf(object):  # stf
     """
     Use this module to get devices of remote stf platform
     """
