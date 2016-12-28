@@ -11,45 +11,13 @@ Tests for `stf_selector` module.
 import pytest
 
 from mock import patch
-import stf_selector.stf
-from click.testing import CliRunner
-from stf_selector import cli
-from stf_selector.where import where
-from stf_selector.stf_selector import Selector
-from conftest import generate_data
+from stf_selector.stf import STF
+from stf_selector.query import where
+from stf_selector.selector import Selector
 
 
-@pytest.fixture
-def response():
-    """
-    Sample pytest fixture.
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
-    """
-    Sample pytest test function with the pytest fixture as an argument.
-    """
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
-    print "test"
-
-
-def test_command_line_interface():
-    runner = CliRunner()
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 0
-    assert 'stf_selector.cli.main' in result.output
-    help_result = runner.invoke(cli.main, ['--help'])
-    assert help_result.exit_code == 0
-    assert '--help  Show this message and exit.' in help_result.output
-
-
-# @patch("stf.STF.devices")
-def test_find_with_cond():
+@patch.object(STF, 'devices')
+def test_find_without_cond(mock_devices, generate_data):
     """
     test find method with no cond
     Firstly, you need do two change :
@@ -59,19 +27,16 @@ def test_find_with_cond():
 
     :return: list of device
     """
-    url = "http://10.12.144.16:7100/api/v1/devices"
-    headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
-    # Stf = STF()
-    s = Selector(url=url, headers=headers)
-    # Stf.devices = MagicMock(return_value = generate_data)
-
-    # mock_devices.return_value = generate_data()
+    mock_devices.return_value = generate_data
+    s = Selector()
     s.load()
     s = s.find()
-    print s.devices()
+    assert s.count() == 9
 
 
-def test_find_with_one_cond():
+
+@patch.object(STF, 'devices')
+def test_find_with_one_cond(mock_devices, generate_data):
     """
     test find method with one cond
     Firstly, you need do two change :
@@ -85,16 +50,17 @@ def test_find_with_one_cond():
     :type cond:  where
     :return: list of device
     """
-    url = "http://10.12.144.16:7100/api/v1/devices"
-    headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
-    s = Selector(url=url, headers=headers)
+    mock_devices.return_value = generate_data
+    s = Selector()
     s.load()
+
     cond = where("sdk") == '19'
     s = s.find(cond=cond)
-    print s.devices()
+    assert s.count() == 2
 
 
-def test_find_with_multi_conds():
+@patch.object(STF, 'devices')
+def test_find_with_multi_conds(mock_devices, generate_data):
     """
     test find method with multi cond
     Firstly, you need do two change :
@@ -109,7 +75,7 @@ def test_find_with_multi_conds():
         like : (where("sdk")==19) | (where("manufacturer") == 'OPPO')
         or like :((where("manufacturer") == 'SAMSUNG') | (where("manufacturer") == 'OPPO')) & (where("sdk")==19)
     Secondly:
-        s = selector()
+        s = stf_selector()
         url = BASE_URL
         headers = AUTH_HEADER
         s.insert_data(url, headers)
@@ -119,9 +85,8 @@ def test_find_with_multi_conds():
     :type cond: where
     :return: list of device
     """
-    url = "http://10.12.144.16:7100/api/v1/devices"
-    headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
-    s = Selector(url=url, headers=headers)
+    mock_devices.return_value = generate_data
+    s = Selector()
     s.load()
 
     # you can code like
@@ -129,8 +94,4 @@ def test_find_with_multi_conds():
             | (where("manufacturer") == 'OPPO')) \
            & (where("sdk") == '19')
     s = s.find(cond=cond)
-
-    # or like
-    # s.find((where("manufacturer") == 'SAMSUNG')
-    #         | (where("manufacturer") == 'OPPO')).find((where("sdk") == 19))
-    print s.devices()
+    assert s.count() == 1

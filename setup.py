@@ -24,7 +24,7 @@ test_requirements = [
 setup(
     name='stf_selector',
     version='0.1.0',
-    description="stf devices selector",
+    description="stf devices stf_selector",
     long_description=readme + '\n\n' + history,
     author="Juan Liu",
     author_email='wliu_intern@xiaohongshu.com',

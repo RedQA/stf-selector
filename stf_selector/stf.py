@@ -18,22 +18,26 @@ class STF(object):
     def __init__(self):
         pass
 
-    def devices(self, url=None, headers=None):
+    def devices(self, url=None, token=None):
         """
         Send request to stf and get devices
 
         :param url: the address of stf platform
         :type url: str
-        :param headers: headers which used to login in stf
-        like : {Authorization:'Bearer ....'}
-        :type headers: dict
+        :param token: token which used to login in stf
+        like : '3e5dd447cd334d549c849d19707eb269df74cabd67......'
+        :type token: dict
         :return: if 'success' is True, return list of devices.
         Otherwise, return None.
         """
         if url is None:
             logger.info("Please set the request address!")
             return None
-        response = requests.get(url=url, headers=headers)
+        if token is not None:
+            auth = dict()
+            auth["Authorization"] = 'Bearer ' + token
+            auth = auth
+        response = requests.get(url=url, headers=auth)
         res = response.json()
         if res is not None and res["success"] is True:
             return yaml.safe_load(json.dumps(res))  # unicode to str
@@ -43,11 +47,11 @@ class STF(object):
 
 
 if __name__ == '__main__':
-    # no url or headers
+    # no url or token
     print STF().devices()
-    # url and no headers
+    # url and no token
     url = "http://10.12.144.16:7100/api/v1/devices"
     print STF().devices()
-    # with url and headers
-    headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
-    print STF().devices(url=url, headers=headers)
+    # with url and token
+    token = "3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421"
+    print STF().devices(url=url, token=token)
