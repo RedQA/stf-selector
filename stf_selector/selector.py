@@ -96,17 +96,3 @@ class Selector(object):
         :return:
         """
         self._db.purge()
-
-
-if __name__ == '__main__':
-    url = "http://10.12.144.16:7100/api/v1/devices"
-    token = '3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'
-    selector = Selector(url=url, token=token)
-    selector.load()
-    selector = selector.find(
-        cond=((where("manufacturer") == 'OPPO')
-              | (where("manufacturer") == 'SAMSUNG'))
-             & (where("sdk") == '19')
-             & (where("display")["height"] == 1920)) \
-        .find(cond=where("display")["width"] == 1080)
-    print selector.devices()

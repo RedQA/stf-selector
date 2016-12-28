@@ -8,8 +8,6 @@ test_stf_selector
 Tests for `stf_selector` module.
 """
 
-import pytest
-
 from mock import patch
 from stf_selector.stf import STF
 from stf_selector.query import where
@@ -20,12 +18,7 @@ from stf_selector.selector import Selector
 def test_find_without_cond(mock_devices, generate_data):
     """
     test find method with no cond
-    Firstly, you need do two change :
-    a）configure BASE_URL in constant.py
-        according to your real address of stf
-    b) configure headers to your authorization
-
-    :return: list of device
+    :return: len of devices
     """
     mock_devices.return_value = generate_data
     s = Selector()
@@ -34,21 +27,16 @@ def test_find_without_cond(mock_devices, generate_data):
     assert s.count() == 9
 
 
-
 @patch.object(STF, 'devices')
 def test_find_with_one_cond(mock_devices, generate_data):
     """
     test find method with one cond
-    Firstly, you need do two change :
-    a）configure BASE_URL in constant.py
-        according to your real address of stf
-    b) configure headers to your authorization
 
     :param cond: condition to filter devices.
         like : where("sdk")==19 the details syntax
     See more at: http://
     :type cond:  where
-    :return: list of device
+    :return: len of device
     """
     mock_devices.return_value = generate_data
     s = Selector()
@@ -63,27 +51,19 @@ def test_find_with_one_cond(mock_devices, generate_data):
 def test_find_with_multi_conds(mock_devices, generate_data):
     """
     test find method with multi cond
-    Firstly, you need do two change :
-    a）configure BASE_URL in constant.py
-        according to your real address of stf
-    b) configure headers to your authorization
 
-    :param cond: condition to filter devices.
+    condition to filter devices.
     there are two ways to do muitl filter
     Firstly:
         like : (where("sdk")==19) & (where("manufacturer") == 'OPPO')
         like : (where("sdk")==19) | (where("manufacturer") == 'OPPO')
         or like :((where("manufacturer") == 'SAMSUNG') | (where("manufacturer") == 'OPPO')) & (where("sdk")==19)
     Secondly:
-        s = stf_selector()
-        url = BASE_URL
-        headers = AUTH_HEADER
-        s.insert_data(url, headers)
         s.find(cond=cond).find(cond=cond)
-        or : s.find(cond=cond).find(op="|",cond=cond).find(...)
+        or : s.find(cond=cond).find(cond=cond).find(...)
     See more at: http://
-    :type cond: where
-    :return: list of device
+    :type : where
+    :return: len of device
     """
     mock_devices.return_value = generate_data
     s = Selector()

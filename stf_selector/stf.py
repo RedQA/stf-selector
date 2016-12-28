@@ -44,14 +44,3 @@ class STF(object):
         else:
             logger.info("stf response false:" + str(res))
             return None
-
-
-if __name__ == '__main__':
-    # no url or token
-    print STF().devices()
-    # url and no token
-    url = "http://10.12.144.16:7100/api/v1/devices"
-    print STF().devices()
-    # with url and token
-    token = "3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421"
-    print STF().devices(url=url, token=token)

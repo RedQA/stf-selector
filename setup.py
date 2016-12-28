@@ -27,7 +27,7 @@ setup(
     description="stf devices stf_selector",
     long_description=readme + '\n\n' + history,
     author="Juan Liu",
-    author_email='wliu_intern@xiaohongshu.com',
+    author_email='littlewei_liu@163.com',
     url='https://github.com/wliu_intern/stf_selector',
     packages=[
         'stf_selector',
