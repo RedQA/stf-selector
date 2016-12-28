@@ -10,10 +10,13 @@ Tests for `stf_selector` module.
 
 import pytest
 
+from mock import patch
+import stf_selector.stf
 from click.testing import CliRunner
 from stf_selector import cli
 from stf_selector.where import where
 from stf_selector.stf_selector import Selector
+from conftest import generate_data
 
 
 @pytest.fixture
@@ -45,6 +48,7 @@ def test_command_line_interface():
     assert '--help  Show this message and exit.' in help_result.output
 
 
+# @patch("stf.STF.devices")
 def test_find_with_cond():
     """
     test find method with no cond
@@ -57,11 +61,14 @@ def test_find_with_cond():
     """
     url = "http://10.12.144.16:7100/api/v1/devices"
     headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
+    # Stf = STF()
     s = Selector(url=url, headers=headers)
+    # Stf.devices = MagicMock(return_value = generate_data)
+
+    # mock_devices.return_value = generate_data()
     s.load()
     s = s.find()
     print s.devices()
-    print "--------0------"
 
 
 def test_find_with_one_cond():
@@ -85,7 +92,6 @@ def test_find_with_one_cond():
     cond = where("sdk") == '19'
     s = s.find(cond=cond)
     print s.devices()
-    print "--------1------"
 
 
 def test_find_with_multi_conds():
@@ -128,4 +134,3 @@ def test_find_with_multi_conds():
     # s.find((where("manufacturer") == 'SAMSUNG')
     #         | (where("manufacturer") == 'OPPO')).find((where("sdk") == 19))
     print s.devices()
-    print "--------2------"

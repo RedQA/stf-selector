@@ -1,49 +1,53 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Contains the : class: 'http_stf'"""
+"""Contains the : class: 'STF'"""
 import requests
 import logging
 import json
 import yaml
-from constant import BASE_URL
 
 logger = logging.getLogger(__name__)
 
 
-class http_stf(object):  # stf
+class STF(object):
     """
-    Use this module to get devices of remote stf platform
+    Use this module to get devices from remote stf platform
     """
 
     def __init__(self):
         pass
 
-    def get_devices(self, url=BASE_URL, headers=None):
+    def devices(self, url=None, headers=None):
         """
         Send request to stf and get devices
 
         :param url: the address of stf platform
         :type url: str
         :param headers: headers which used to login in stf
-        like : {Authorization:'Bearer ...."}
-        :type headers:dict
-        :return: if 'success' is True, return list of devices, instead
-        of the response 'success' is False, return None.
+        like : {Authorization:'Bearer ....'}
+        :type headers: dict
+        :return: if 'success' is True, return list of devices.
+        Otherwise, return None.
         """
-        # url = BASE_URL
-        # if need try catch
-        response = requests.get(url, headers=headers)
+        if url is None:
+            logger.info("Please set the request address!")
+            return None
+        response = requests.get(url=url, headers=headers)
         res = response.json()
         if res is not None and res["success"] is True:
-            # unicode to str
-            return yaml.safe_load(json.dumps(res))
+            return yaml.safe_load(json.dumps(res))  # unicode to str
         else:
-            logger.info("Request error:" + str(res))
+            logger.info("stf response false:" + str(res))
             return None
 
 
 if __name__ == '__main__':
-    # print http_stf().get_devices
+    # no url or headers
+    print STF().devices()
+    # url and no headers
+    url = "http://10.12.144.16:7100/api/v1/devices"
+    print STF().devices()
+    # with url and headers
     headers = {"Authorization": 'Bearer 3e5dd447cd334d549c849d19707eb269df74cabd67e5400986a5240023af6421'}
-    print http_stf().get_devices(headers=headers)
+    print STF().devices(url=url, headers=headers)
