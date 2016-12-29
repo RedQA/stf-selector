@@ -19,9 +19,8 @@ mode         Plusm A
 import logging
 
 from stf import STF
-from query import where
 from tinydb import TinyDB
-from tinydb.storages import MemoryStorage, JSONStorage
+from tinydb.storages import MemoryStorage
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ TinyDB.DEFAULT_STORAGE = MemoryStorage
 
 class Selector(object):
     """
-    According to users requirements to select devices
+    According to user's requirements to select devices
     """
 
     def __init__(self, url=None, token=None):
@@ -50,8 +49,8 @@ class Selector(object):
         res = STF().devices(url=self._url, token=self._token)
         if res is not None:
             list_devices = res['devices']
-            eids = self._db.insert_multiple(list_devices)
-            return len(eids)
+            self._db.insert_multiple(list_devices)
+            return self.count()
         else:
             return 0
 

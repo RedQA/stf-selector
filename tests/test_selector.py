@@ -5,7 +5,7 @@
 test_stf_selector
 ----------------------------------
 
-Tests for `stf_selector` module.
+Tests for `selector` module.
 """
 
 from mock import patch

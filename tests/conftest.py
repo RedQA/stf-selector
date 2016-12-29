@@ -138,7 +138,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 2,
-                        'url': 'ws: //10.12.144.16: 7516',
+                        'url': 'ws: //localhost: 7516',
                         'height': 1280,
                         'xdpi': 309.96600341796875,
                         'width': 720,
@@ -216,7 +216,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 3,
-                        'url': 'ws: //10.12.144.16: 7424',
+                        'url': 'ws: //localhost: 7424',
                         'height': 1920,
                         'xdpi': 422.0299987792969,
                         'width': 1080,
@@ -294,7 +294,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 3,
-                        'url': 'ws: //10.12.144.16: 7664',
+                        'url': 'ws: //localhost: 7664',
                         'height': 1920,
                         'xdpi': 386.3659973144531,
                         'width': 1080,
@@ -368,7 +368,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 3,
-                        'url': 'ws: //10.12.144.16: 7684',
+                        'url': 'ws: //localhost: 7684',
                         'height': 1920,
                         'xdpi': 442.45098876953125,
                         'width': 1080,
@@ -454,7 +454,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 3,
-                        'url': 'ws: //10.12.144.16: 7584',
+                        'url': 'ws: //localhost: 7584',
                         'height': 1920,
                         'xdpi': 472.9649963378906,
                         'width': 1080,
@@ -532,7 +532,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 3,
-                        'url': 'ws: //10.12.144.16: 7596',
+                        'url': 'ws: //localhost: 7596',
                         'height': 1920,
                         'xdpi': 442.45098876953125,
                         'width': 1080,
@@ -610,7 +610,7 @@ def generate_data():
                     'display': {
                         'secure': True,
                         'density': 2,
-                        'url': 'ws: //10.12.144.16: 7452',
+                        'url': 'ws: //localhost: 7452',
                         'height': 1280,
                         'xdpi': 320,
                         'width': 720,
